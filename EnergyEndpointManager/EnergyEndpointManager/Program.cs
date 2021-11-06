@@ -26,7 +26,6 @@ namespace EnergyEndpointManager
                 if (!int.TryParse(inputString, out inputInt))
                 {
                     Console.WriteLine("The input is invalid.");
-                    Console.Beep(37, 250);
                     Console.ReadLine();
                 }
 
