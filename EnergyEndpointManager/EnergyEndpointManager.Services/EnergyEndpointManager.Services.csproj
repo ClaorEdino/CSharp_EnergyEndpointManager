@@ -46,6 +46,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EnergyEndpointManagerService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EnergyEndpointManager.Repository\EnergyEndpointManager.Repository.csproj">
+      <Project>{70f2508e-a153-45e0-93ff-353ed6cd3ef3}</Project>
+      <Name>EnergyEndpointManager.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

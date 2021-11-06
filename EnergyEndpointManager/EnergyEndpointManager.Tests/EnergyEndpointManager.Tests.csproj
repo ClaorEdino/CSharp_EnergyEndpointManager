@@ -12,4 +12,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EnergyEndpointManager.Domain\EnergyEndpointManager.Domain.csproj" />
+    <ProjectReference Include="..\EnergyEndpointManager.Repository\EnergyEndpointManager.Repository.csproj" />
+    <ProjectReference Include="..\EnergyEndpointManager.Services\EnergyEndpointManager.Services.csproj" />
+  </ItemGroup>
+
 </Project>

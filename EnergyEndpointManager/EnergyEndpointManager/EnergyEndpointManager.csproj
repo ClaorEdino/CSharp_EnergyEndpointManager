@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnergyEndpointManager.Services\EnergyEndpointManager.Services.csproj">
+      <Project>{12128fae-98ef-4650-ab3d-50688d472f95}</Project>
+      <Name>EnergyEndpointManager.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

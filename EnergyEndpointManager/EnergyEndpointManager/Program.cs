@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnergyEndpointManager.Services.Builders;
+using System;
 
 namespace EnergyEndpointManager
 {
@@ -6,6 +7,7 @@ namespace EnergyEndpointManager
     {
         static void Main(string[] args)
         {
+            var service = EnergyEndpointManagerServiceBuilder.Build();
             var inputString = "";
 
             while (inputString != "6")
@@ -27,9 +29,33 @@ namespace EnergyEndpointManager
                 {
                     Console.WriteLine("The input is invalid.");
                     Console.ReadLine();
+                    continue;
                 }
 
-                Console.Clear();
+                switch (inputInt)
+                {
+                    case 1:
+                        service.InsertEndpoint();
+                        break;
+                    case 2:
+                        service.EditEndpoint();
+                        break;
+                    case 3:
+                        service.DeleteEndpoint();
+                        break;
+                    case 4:
+                        service.ListEndpoints();
+                        break;
+                    case 5:
+                        service.FindEndpoint();
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        Console.WriteLine("The input is invalid.");
+                        Console.ReadLine();
+                        break;
+                }
             }
 
             PrintHeader();
@@ -39,6 +65,7 @@ namespace EnergyEndpointManager
 
         private static void PrintHeader()
         {
+            Console.Clear();
             Console.WriteLine("/////////////////////////////");
             Console.WriteLine("///Energy Endpoint Manager///");
             Console.WriteLine("/////////////////////////////");
