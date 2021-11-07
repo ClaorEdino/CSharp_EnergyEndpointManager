@@ -1,4 +1,5 @@
 ﻿using EnergyEndpointManager.Services.Builders;
+using EnergyEndpointManager.Services.ViewModels;
 using System;
 
 namespace EnergyEndpointManager
@@ -32,23 +33,97 @@ namespace EnergyEndpointManager
                     continue;
                 }
 
+                string serialNumber;
                 switch (inputInt)
                 {
                     case 1:
-                        service.InsertEndpoint("GTX0001", 16, 100, "1.00.1", 0);
-                        break;
+                        {
+                            PrintHeader();
+
+                            Console.Write("Endpoint Serial Number: ");
+                            serialNumber = Console.ReadLine();
+                            Console.Write("Meter Model Id (16-NSX1P2W, 17-NSX1P3W, 18-NSX2P3W, 19-NSX3P4W): ");
+                            var meterModelId = Console.ReadLine();
+                            Console.Write("Meter Number: ");
+                            var meterNumber = Console.ReadLine();
+                            Console.Write("Meter Firmware Version: ");
+                            var meterFirmwareVersion = Console.ReadLine();
+                            Console.Write("Switch State (0-Disconnected, 1-Connected, 2-Armed): ");
+                            var switchState = Console.ReadLine();
+
+                            service.InsertEndpoint(serialNumber, int.Parse(meterModelId), int.Parse(meterNumber), meterFirmwareVersion, int.Parse(switchState));
+
+                            Console.WriteLine();
+                            Console.WriteLine("Endpoint created!");
+                            Console.ReadLine();
+
+                            break;
+                        }
                     case 2:
-                        service.EditEndpoint("GTX0001", 2);
-                        break;
+                        {
+                            PrintHeader();
+
+                            Console.Write("Endpoint Serial Number: ");
+                            serialNumber = Console.ReadLine();
+                            Console.Write("Switch State (0-Disconnected, 1-Connected, 2-Armed): ");
+                            var switchState = Console.ReadLine();
+
+                            service.EditEndpoint(serialNumber, int.Parse(switchState));
+
+                            Console.WriteLine();
+                            Console.WriteLine("Endpoint updated!");
+                            Console.ReadLine();
+
+                            break;
+                        }
                     case 3:
-                        service.DeleteEndpoint("GTX0001");
-                        break;
+                        {
+                            PrintHeader();
+
+                            Console.Write("Endpoint Serial Number: ");
+                            serialNumber = Console.ReadLine();
+
+                            service.DeleteEndpoint(serialNumber);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Endpoint deleted!");
+                            Console.ReadLine();
+
+                            break;
+                        }
                     case 4:
-                        service.ListEndpoints();
+                        var endpoints = service.ListEndpoints();
+
+                        PrintHeader();
+
+                        if (endpoints.Count == 0)
+                        {
+                            Console.WriteLine("No endpoints registered");
+                            Console.ReadLine();
+                            break;
+                        }
+
+                        foreach(var endp in endpoints)
+                        {
+                            PrintEndpoint(endp);
+                        }
+                        Console.ReadLine();
+
                         break;
                     case 5:
-                        service.FindEndpoint("GTX0001");
-                        break;
+                        {
+                            PrintHeader();
+
+                            Console.Write("Endpoint Serial Number: ");
+                            serialNumber = Console.ReadLine();
+                            Console.WriteLine();
+
+                            var energyEndpoint = service.FindEndpoint(serialNumber);
+                            PrintEndpoint(energyEndpoint);
+                            Console.ReadLine();
+
+                            break;
+                        }
                     case 6:
                         break;
                     default:
@@ -69,6 +144,16 @@ namespace EnergyEndpointManager
             Console.WriteLine("/////////////////////////////");
             Console.WriteLine("///Energy Endpoint Manager///");
             Console.WriteLine("/////////////////////////////");
+            Console.WriteLine();
+        }
+
+        private static void PrintEndpoint(EnergyEndpointViewModel viewModel)
+        {
+            Console.WriteLine(string.Format("{0}: {1}", "Endpoint Serial Number", viewModel.SerialNumber));
+            Console.WriteLine(string.Format("{0}: {1}", "Meter Model Id", viewModel.MeterModelId));
+            Console.WriteLine(string.Format("{0}: {1}", "Meter Number", viewModel.MeterNumber));
+            Console.WriteLine(string.Format("{0}: {1}", "Meter Firmware Version", viewModel.MeterFirmwareVersion));
+            Console.WriteLine(string.Format("{0}: {1}", "Switch State", viewModel.SwitchState));
             Console.WriteLine();
         }
     }
