@@ -38,20 +38,49 @@ namespace EnergyEndpointManager
                 {
                     case 1:
                         {
+                            int meterModelIdInt;
+                            int meterNumberInt;
+                            int switchStateInt;
+
                             PrintHeader();
 
                             Console.Write("Endpoint Serial Number: ");
                             serialNumber = Console.ReadLine();
+
                             Console.Write("Meter Model Id (16-NSX1P2W, 17-NSX1P3W, 18-NSX2P3W, 19-NSX3P4W): ");
                             var meterModelId = Console.ReadLine();
+                            if (!int.TryParse(meterModelId, out meterModelIdInt) || meterModelIdInt < 16 || meterModelIdInt > 19)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Meter Model Id must be a number between 16 and 19");
+                                Console.ReadLine();
+                                break;
+                            }
+
                             Console.Write("Meter Number: ");
                             var meterNumber = Console.ReadLine();
+                            if (!int.TryParse(meterNumber, out meterNumberInt))
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Meter Number must be a number");
+                                Console.ReadLine();
+                                break;
+                            }
+
                             Console.Write("Meter Firmware Version: ");
                             var meterFirmwareVersion = Console.ReadLine();
+
                             Console.Write("Switch State (0-Disconnected, 1-Connected, 2-Armed): ");
                             var switchState = Console.ReadLine();
+                            if (!int.TryParse(switchState, out switchStateInt) || switchStateInt < 0 || switchStateInt > 2)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Switch State must be a number between 0 and 2");
+                                Console.ReadLine();
+                                break;
+                            }
 
-                            service.InsertEndpoint(serialNumber, int.Parse(meterModelId), int.Parse(meterNumber), meterFirmwareVersion, int.Parse(switchState));
+                            service.InsertEndpoint(serialNumber, meterModelIdInt, meterNumberInt, meterFirmwareVersion, switchStateInt);
 
                             Console.WriteLine();
                             Console.WriteLine("Endpoint created!");
@@ -67,6 +96,15 @@ namespace EnergyEndpointManager
                             serialNumber = Console.ReadLine();
                             Console.Write("Switch State (0-Disconnected, 1-Connected, 2-Armed): ");
                             var switchState = Console.ReadLine();
+                            int switchStateInt;
+
+                            if (!int.TryParse(switchState, out switchStateInt) || switchStateInt < 0 || switchStateInt > 2)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Switch State must be a number between 0 and 2");
+                                Console.ReadLine();
+                                break;
+                            }
 
                             service.EditEndpoint(serialNumber, int.Parse(switchState));
 
@@ -92,24 +130,26 @@ namespace EnergyEndpointManager
                             break;
                         }
                     case 4:
-                        var endpoints = service.ListEndpoints();
-
-                        PrintHeader();
-
-                        if (endpoints.Count == 0)
                         {
-                            Console.WriteLine("No endpoints registered");
+                            var response = service.ListEndpoints();
+
+                            PrintHeader();
+
+                            if (response.EnergyEndpoints.Count == 0)
+                            {
+                                Console.WriteLine("No endpoints registered");
+                                Console.ReadLine();
+                                break;
+                            }
+
+                            foreach (var endp in response.EnergyEndpoints)
+                            {
+                                PrintEndpoint(endp);
+                            }
                             Console.ReadLine();
+
                             break;
                         }
-
-                        foreach(var endp in endpoints)
-                        {
-                            PrintEndpoint(endp);
-                        }
-                        Console.ReadLine();
-
-                        break;
                     case 5:
                         {
                             PrintHeader();
@@ -118,8 +158,8 @@ namespace EnergyEndpointManager
                             serialNumber = Console.ReadLine();
                             Console.WriteLine();
 
-                            var energyEndpoint = service.FindEndpoint(serialNumber);
-                            PrintEndpoint(energyEndpoint);
+                            var response = service.FindEndpoint(serialNumber);
+                            PrintEndpoint(response.EnergyEndpoint);
                             Console.ReadLine();
 
                             break;

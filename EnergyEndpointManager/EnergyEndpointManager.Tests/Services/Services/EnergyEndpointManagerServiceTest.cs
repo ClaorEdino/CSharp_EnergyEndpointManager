@@ -29,8 +29,9 @@ namespace EnergyEndpointManager.Tests.Services.Services
         [Test]
         public void ShouldCallRepositoryInsert()
         {
-            service.InsertEndpoint("X001", 17, 200, "1.00.1", 0);
+            var response = service.InsertEndpoint("X001", 17, 200, "1.00.1", 0);
             repositoryMock.Verify(s => s.Insert(It.IsAny<EnergyEndpoint>()), Times.Once);
+            Assert.IsTrue(response.Success);
         }
 
         [Test]
@@ -38,10 +39,11 @@ namespace EnergyEndpointManager.Tests.Services.Services
         {
             var serialNumber = "X001";
 
-            service.EditEndpoint(serialNumber, 0);
+            var response = service.EditEndpoint(serialNumber, 0);
 
             repositoryMock.Verify(s => s.Get(serialNumber), Times.Once);
             repositoryMock.Verify(s => s.Edit(serialNumber, It.IsAny<EnergyEndpoint>()), Times.Once);
+            Assert.IsTrue(response.Success);
         }
 
         [Test]
@@ -49,9 +51,10 @@ namespace EnergyEndpointManager.Tests.Services.Services
         {
             var serialNumber = "X001";
 
-            service.DeleteEndpoint(serialNumber);
+            var response = service.DeleteEndpoint(serialNumber);
 
             repositoryMock.Verify(s => s.Delete(serialNumber), Times.Once);
+            Assert.IsTrue(response.Success);
         }
 
         [Test]
@@ -59,19 +62,21 @@ namespace EnergyEndpointManager.Tests.Services.Services
         {
             var serialNumber = "X001";
 
-            var energyEndpointViewModel = service.FindEndpoint(serialNumber);
+            var response = service.FindEndpoint(serialNumber);
 
             repositoryMock.Verify(s => s.Get(serialNumber), Times.Once);
-            Assert.IsNotNull(energyEndpointViewModel);
+            Assert.IsNotNull(response.EnergyEndpoint);
+            Assert.IsTrue(response.Success);
         }
 
         [Test]
         public void ShouldCallRepositoryGetAll()
         {
-            var endpointViewModels = service.ListEndpoints();
+            var response = service.ListEndpoints();
 
             repositoryMock.Verify(s => s.GetAll(), Times.Once);
-            Assert.Greater(endpointViewModels.Count, 0);
+            Assert.Greater(response.EnergyEndpoints.Count, 0);
+            Assert.IsTrue(response.Success);
         }
     }
 }

@@ -46,6 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EnergyEndpointManagerService.cs" />
     <Compile Include="ViewModels\EnergyEndpointViewModel.cs" />
+    <Compile Include="ViewModels\BasicResponseViewModel.cs" />
+    <Compile Include="ViewModels\GetAllEnergyEndpointResponseViewModel.cs" />
+    <Compile Include="ViewModels\GetEnergyEndpointResponseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnergyEndpointManager.Domain\EnergyEndpointManager.Domain.csproj">

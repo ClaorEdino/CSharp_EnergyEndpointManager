@@ -6,10 +6,10 @@ namespace EnergyEndpointManager.Services.Interfaces
 {
     public interface IEnergyEndpointManagerService
     {
-        void InsertEndpoint(string serialNumber, int meterModelId, int meterNumber, string meterFirmwareVersion, int switchState);
-        void EditEndpoint(string serialNumber, int switchState);
-        void DeleteEndpoint(string serialNumber);
-        IList<EnergyEndpointViewModel> ListEndpoints();
-        EnergyEndpointViewModel FindEndpoint(string serialNumber);
+        BasicResponseViewModel InsertEndpoint(string serialNumber, int meterModelId, int meterNumber, string meterFirmwareVersion, int switchState);
+        BasicResponseViewModel EditEndpoint(string serialNumber, int switchState);
+        BasicResponseViewModel DeleteEndpoint(string serialNumber);
+        GetAllEnergyEndpointResponseViewModel ListEndpoints();
+        GetEnergyEndpointResponseViewModel FindEndpoint(string serialNumber);
     }
 }
