@@ -1,6 +1,8 @@
 ﻿using EnergyEndpointManager.Domain.Domains;
 using EnergyEndpointManager.Domain.Enums;
+using EnergyEndpointManager.Repository.Exceptions;
 using EnergyEndpointManager.Repository.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +19,11 @@ namespace EnergyEndpointManager.Repository.Repositories
 
         public void Insert(EnergyEndpoint energyEndpoint)
         {
+            if (dataTable.Any(s => s.SerialNumber == energyEndpoint.SerialNumber))
+            {
+                throw new DuplicateEndpointException(energyEndpoint.SerialNumber);
+            }
+
             dataTable.Add(energyEndpoint);
         }
 
@@ -27,6 +34,12 @@ namespace EnergyEndpointManager.Repository.Repositories
 
         public EnergyEndpoint Get(string serialNumber)
         {
+            var energyEndpoint = dataTable.Where(s => s.SerialNumber == serialNumber).FirstOrDefault();
+            if (energyEndpoint == null)
+            {
+                throw new NonExistentEndpointException(serialNumber);
+            }
+
             return dataTable.Where(s => s.SerialNumber == serialNumber).FirstOrDefault();
         }
 

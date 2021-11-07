@@ -1,6 +1,7 @@
 ﻿using EnergyEndpointManager.Domain.Domains;
 using EnergyEndpointManager.Domain.Enums;
 using EnergyEndpointManager.Repository.Builders;
+using EnergyEndpointManager.Repository.Exceptions;
 using EnergyEndpointManager.Repository.Interfaces;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -65,8 +66,26 @@ namespace EnergyEndpointManager.Tests.Repository.Repositories
         {
             repository.Delete("GTX004");
 
-            EnergyEndpoint endpoint = repository.Get("GTX004");
-            Assert.IsNull(endpoint);
+            Assert.Throws<NonExistentEndpointException>(() => repository.Get("9999"));
+        }
+
+        [Test]
+        public void ShouldThrowAnExceptionIfTryingToAddDuplicateEndpoint()
+        {
+            Assert.Throws<DuplicateEndpointException>(() =>
+                repository.Insert(new EnergyEndpoint("GTX001", MeterModelEnum.NSX1P2W, 100, "1.00.1", SwitchStateEnum.Disconnected)));
+        }
+
+        [Test]
+        public void ShouldThrowAnExceptionIfTryingToGetAnEndpointThatDoesntExist()
+        {
+            Assert.Throws<NonExistentEndpointException>(() => repository.Get("9999"));
+        }
+
+        [Test]
+        public void ShouldThrowAnExceptionIfTryingToDeleteAnEndpointThatDoesntExist()
+        {
+            Assert.Throws<NonExistentEndpointException>(() => repository.Delete("9999"));
         }
     }
 }

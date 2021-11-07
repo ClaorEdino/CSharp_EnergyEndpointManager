@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\EnergyEndpointManagerRepositoryBuilder.cs" />
+    <Compile Include="Exceptions\DuplicateEndpointException.cs" />
+    <Compile Include="Exceptions\NonExistentEndpointException.cs" />
     <Compile Include="Interfaces\IEnergyEndpointManagerRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EnergyEndpointManagerRepository.cs" />

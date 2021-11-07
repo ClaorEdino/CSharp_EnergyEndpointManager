@@ -13,6 +13,6 @@ namespace EnergyEndpointManager.Services.ViewModels
         {
         }
 
-        public List<EnergyEndpointViewModel> EnergyEndpoints { get; internal set; }
+        public IList<EnergyEndpointViewModel> EnergyEndpoints { get; internal set; }
     }
 }

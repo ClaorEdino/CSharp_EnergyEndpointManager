@@ -80,7 +80,14 @@ namespace EnergyEndpointManager
                                 break;
                             }
 
-                            service.InsertEndpoint(serialNumber, meterModelIdInt, meterNumberInt, meterFirmwareVersion, switchStateInt);
+                            var response = service.InsertEndpoint(serialNumber, meterModelIdInt, meterNumberInt, meterFirmwareVersion, switchStateInt);
+                            if (!response.Success)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine(response.Error);
+                                Console.ReadLine();
+                                break;
+                            }
 
                             Console.WriteLine();
                             Console.WriteLine("Endpoint created!");
@@ -94,6 +101,19 @@ namespace EnergyEndpointManager
 
                             Console.Write("Endpoint Serial Number: ");
                             serialNumber = Console.ReadLine();
+
+                            var response =  service.FindEndpoint(serialNumber);
+                            if (!response.Success)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine(response.Error);
+                                Console.ReadLine();
+                                break;
+                            }
+
+                            Console.WriteLine();
+                            PrintEndpoint(response.EnergyEndpoint);
+
                             Console.Write("Switch State (0-Disconnected, 1-Connected, 2-Armed): ");
                             var switchState = Console.ReadLine();
                             int switchStateInt;
@@ -106,7 +126,14 @@ namespace EnergyEndpointManager
                                 break;
                             }
 
-                            service.EditEndpoint(serialNumber, int.Parse(switchState));
+                            var respondeEdit = service.EditEndpoint(serialNumber, int.Parse(switchState));
+                            if (!respondeEdit.Success)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine(response.Error);
+                                Console.ReadLine();
+                                break;
+                            }
 
                             Console.WriteLine();
                             Console.WriteLine("Endpoint updated!");
@@ -121,12 +148,40 @@ namespace EnergyEndpointManager
                             Console.Write("Endpoint Serial Number: ");
                             serialNumber = Console.ReadLine();
 
-                            service.DeleteEndpoint(serialNumber);
+                            var response = service.FindEndpoint(serialNumber);
+                            if (!response.Success)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine(response.Error);
+                                Console.ReadLine();
+                                break;
+                            }
+
+                            Console.WriteLine();
+                            PrintEndpoint(response.EnergyEndpoint);
+
+                            Console.Write("Do you confirm the deletion of the endpoint? (Y/N)  ");
+                            var choice = Console.ReadLine();
+                            if (choice.ToUpper() != "Y")
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Deletion cancelled!");
+                                Console.ReadLine();
+                                break;
+                            }
+
+                            var respondeDelete = service.DeleteEndpoint(serialNumber);
+                            if (!respondeDelete.Success)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine(response.Error);
+                                Console.ReadLine();
+                                break;
+                            }
 
                             Console.WriteLine();
                             Console.WriteLine("Endpoint deleted!");
                             Console.ReadLine();
-
                             break;
                         }
                     case 4:

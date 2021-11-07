@@ -3,6 +3,7 @@ using EnergyEndpointManager.Domain.Enums;
 using EnergyEndpointManager.Repository.Interfaces;
 using EnergyEndpointManager.Services.Interfaces;
 using EnergyEndpointManager.Services.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,41 +20,80 @@ namespace EnergyEndpointManager.Services.Services
 
         public BasicResponseViewModel InsertEndpoint(string serialNumber, int meterModelId, int meterNumber, string meterFirmwareVersion, int switchState)
         {
-            repository.Insert(new EnergyEndpoint(serialNumber, (MeterModelEnum)meterModelId, meterNumber, meterFirmwareVersion, (SwitchStateEnum)switchState));
+            try
+            {
+                repository.Insert(new EnergyEndpoint(serialNumber, (MeterModelEnum)meterModelId, meterNumber, meterFirmwareVersion, (SwitchStateEnum)switchState));
+            }
+            catch(Exception exc)
+            {
+                return new BasicResponseViewModel(false, exc.ToString());
+            }
 
             return new BasicResponseViewModel(true);
         }
 
         public BasicResponseViewModel EditEndpoint(string serialNumber, int switchState)
         {
-            var energyEndpoint = repository.Get(serialNumber);
-            energyEndpoint.SwitchState = (SwitchStateEnum)switchState;
+            try
+            {
+                var energyEndpoint = repository.Get(serialNumber);
+                energyEndpoint.SwitchState = (SwitchStateEnum)switchState;
 
-            repository.Edit(serialNumber, energyEndpoint);
+                repository.Edit(serialNumber, energyEndpoint);
+            }
+            catch(Exception exc)
+            {
+                return new BasicResponseViewModel(false, exc.ToString());
+            }
 
             return new BasicResponseViewModel(true);
         }
 
         public BasicResponseViewModel DeleteEndpoint(string serialNumber)
         {
-            repository.Delete(serialNumber);
+            try
+            {
+                repository.Delete(serialNumber);
+            }
+            catch(Exception exc)
+            {
+                return new BasicResponseViewModel(false, exc.ToString());
+            }
 
             return new BasicResponseViewModel(true);
         }
 
         public GetAllEnergyEndpointResponseViewModel ListEndpoints()
         {
-            var energyEndpoints = repository.GetAll();
-            var energyEndpointsViewModel = energyEndpoints.Select(s => new EnergyEndpointViewModel(s)).ToList();
+            IList<EnergyEndpointViewModel> energyEndpointsViewModel;
+
+            try
+            {
+                var energyEndpoints = repository.GetAll();
+                energyEndpointsViewModel = energyEndpoints.Select(s => new EnergyEndpointViewModel(s)).ToList();
+            }
+            catch(Exception exc)
+            {
+                return new GetAllEnergyEndpointResponseViewModel(false, exc.ToString());
+            }
 
             return new GetAllEnergyEndpointResponseViewModel(true) { EnergyEndpoints = energyEndpointsViewModel };
         }
 
         public GetEnergyEndpointResponseViewModel FindEndpoint(string serialNumber)
         {
-            var energyEndpoint = repository.Get(serialNumber);
+            EnergyEndpointViewModel energyEndpointViewModel;
 
-            var energyEndpointViewModel = new EnergyEndpointViewModel(energyEndpoint);
+            try
+            {
+                var energyEndpoint = repository.Get(serialNumber);
+
+                energyEndpointViewModel = new EnergyEndpointViewModel(energyEndpoint);
+            }
+            catch(Exception exc)
+            {
+                return new GetEnergyEndpointResponseViewModel(false, exc.ToString());
+            }
 
             return new GetEnergyEndpointResponseViewModel(true) { EnergyEndpoint = energyEndpointViewModel };
         }
