@@ -35,5 +35,38 @@ namespace EnergyEndpointManager.Tests.Repository.Repositories
             IList<EnergyEndpoint> endpoints = repository.GetAll();
             Assert.NotZero(endpoints.Count);
         }
+
+        [Test]
+        public void ShouldBeAbleToGetAnSpecificEndpointFromRepository()
+        {
+            EnergyEndpoint endpoint = repository.Get("GTX004");
+            Assert.AreEqual("GTX004", endpoint.SerialNumber);
+            Assert.AreEqual(MeterModelEnum.NSX3P4W, endpoint.MeterModelId);
+            Assert.AreEqual(400, endpoint.MeterNumber);
+            Assert.AreEqual("1.00.4", endpoint.MeterFirmwareVersion);
+            Assert.AreEqual(SwitchStateEnum.Disconnected, endpoint.SwitchState);
+        }
+
+        [Test]
+        public void ShouldBeAbleToEditAnSpecificEndpointOnTheRepository()
+        {
+            repository.Edit("GTX004", new EnergyEndpoint("", MeterModelEnum.NSX1P2W, 8000, "2.00.1", SwitchStateEnum.Armed));
+
+            EnergyEndpoint endpoint = repository.Get("GTX004");
+            Assert.AreEqual("GTX004", endpoint.SerialNumber);
+            Assert.AreEqual(MeterModelEnum.NSX1P2W, endpoint.MeterModelId);
+            Assert.AreEqual(8000, endpoint.MeterNumber);
+            Assert.AreEqual("2.00.1", endpoint.MeterFirmwareVersion);
+            Assert.AreEqual(SwitchStateEnum.Armed, endpoint.SwitchState);
+        }
+
+        [Test]
+        public void ShouldBeAbleToDeleteAnEndpointFromTheRepository()
+        {
+            repository.Delete("GTX004");
+
+            EnergyEndpoint endpoint = repository.Get("GTX004");
+            Assert.IsNull(endpoint);
+        }
     }
 }

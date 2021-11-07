@@ -45,8 +45,13 @@
     <Compile Include="Interfaces\IEnergyEndpointManagerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EnergyEndpointManagerService.cs" />
+    <Compile Include="ViewModels\EnergyEndpointViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnergyEndpointManager.Domain\EnergyEndpointManager.Domain.csproj">
+      <Project>{b90c2c6e-3ecb-473f-a4b4-f066d3d952a3}</Project>
+      <Name>EnergyEndpointManager.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EnergyEndpointManager.Repository\EnergyEndpointManager.Repository.csproj">
       <Project>{70f2508e-a153-45e0-93ff-353ed6cd3ef3}</Project>
       <Name>EnergyEndpointManager.Repository</Name>

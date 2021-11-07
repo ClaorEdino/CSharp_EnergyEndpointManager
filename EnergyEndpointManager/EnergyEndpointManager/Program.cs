@@ -35,19 +35,19 @@ namespace EnergyEndpointManager
                 switch (inputInt)
                 {
                     case 1:
-                        service.InsertEndpoint();
+                        service.InsertEndpoint("GTX0001", 16, 100, "1.00.1", 0);
                         break;
                     case 2:
-                        service.EditEndpoint();
+                        service.EditEndpoint("GTX0001", 2);
                         break;
                     case 3:
-                        service.DeleteEndpoint();
+                        service.DeleteEndpoint("GTX0001");
                         break;
                     case 4:
                         service.ListEndpoints();
                         break;
                     case 5:
-                        service.FindEndpoint();
+                        service.FindEndpoint("GTX0001");
                         break;
                     case 6:
                         break;

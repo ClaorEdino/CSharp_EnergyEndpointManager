@@ -14,10 +14,10 @@ namespace EnergyEndpointManager.Domain.Domains
             SwitchState = switchState;
         }
 
-        public string SerialNumber { get; private set; }
-        public MeterModelEnum MeterModelId { get; private set; }
-        public int MeterNumber { get; private set; }
-        public string MeterFirmwareVersion { get; private set; }
-        public SwitchStateEnum SwitchState { get; private set; }
+        public string SerialNumber { get; set; }
+        public MeterModelEnum MeterModelId { get; set; }
+        public int MeterNumber { get; set; }
+        public string MeterFirmwareVersion { get; set; }
+        public SwitchStateEnum SwitchState { get; set; }
     }
 }

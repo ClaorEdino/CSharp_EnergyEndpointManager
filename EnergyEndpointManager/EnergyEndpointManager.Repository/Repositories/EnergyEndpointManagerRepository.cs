@@ -2,6 +2,7 @@
 using EnergyEndpointManager.Domain.Enums;
 using EnergyEndpointManager.Repository.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EnergyEndpointManager.Repository.Repositories
 {
@@ -22,6 +23,26 @@ namespace EnergyEndpointManager.Repository.Repositories
         public IList<EnergyEndpoint> GetAll()
         {
             return dataTable;
+        }
+
+        public EnergyEndpoint Get(string serialNumber)
+        {
+            return dataTable.Where(s => s.SerialNumber == serialNumber).FirstOrDefault();
+        }
+
+        public void Edit(string serialNumber, EnergyEndpoint energyEndpointUpdated)
+        {
+            var energyEndpoint = Get(serialNumber);
+            energyEndpoint.MeterModelId = energyEndpointUpdated.MeterModelId;
+            energyEndpoint.MeterNumber = energyEndpointUpdated.MeterNumber;
+            energyEndpoint.MeterFirmwareVersion = energyEndpointUpdated.MeterFirmwareVersion;
+            energyEndpoint.SwitchState = energyEndpointUpdated.SwitchState;
+        }
+
+        public void Delete(string serialNumber)
+        {
+            var endpoint = Get(serialNumber);
+            dataTable.Remove(endpoint);
         }
     }
 }
